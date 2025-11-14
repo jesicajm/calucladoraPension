@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Protección Familiar Colombia</title>
+    <title>Protección Familiar</title>
+    <link rel="icon" href="icon-abba.png" />
     <style>
         * {
             margin: 0;
@@ -358,6 +359,25 @@
             }
         }
     </style>
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '4268884596673354');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=4268884596673354&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
 </head>
 
 <body>
@@ -526,9 +546,9 @@
         }
 
         function obtenerPorcentajeSobrevivencia(semanas) {
-            if (semanas < 549) { 
-                return 0; 
-            } 
+            if (semanas < 549) {
+                return 0;
+            }
             if (semanas >= 1250) {
                 return 0.75;
             }
@@ -569,57 +589,57 @@
             const porcentajeBrecha = ingresoActual > 0 ? ((brecha / ingresoActual) * 100).toFixed(1) : 0;
 
             const esSuficiente = brecha < (ingresoActual * 0.30);
-            
+
             resultado = {
-                ibc: ibc, 
+                ibc: ibc,
                 ibl: ibl,
-                pensionSobrevivencia, 
-                porcentajeSobrevivencia: (porcentajeSobrevivencia * 100).toFixed(0), 
-                semanas: Math.round(semanas), 
-                brecha, 
-                porcentajeBrecha, 
-                cumpleRequisitos, 
-                numHijos, 
+                pensionSobrevivencia,
+                porcentajeSobrevivencia: (porcentajeSobrevivencia * 100).toFixed(0),
+                semanas: Math.round(semanas),
+                brecha,
+                porcentajeBrecha,
+                cumpleRequisitos,
+                numHijos,
                 esSuficiente
             };
         }
 
-        function updateData(field, value) { 
-            data[field] = value; 
+        function updateData(field, value) {
+            data[field] = value;
         }
 
         function handleNext() {
-            if (typeof step === 'number' || typeof step === 'string') { 
-                stepHistory.push(step); 
-            } 
-            
-            if (step === 2 && data.origenIngresos === 'ya_soy_pensionado') { 
-                step = 'pensionado_info'; 
-            } else if (step === 'pensionado_info') { 
-                step = 10; 
+            if (typeof step === 'number' || typeof step === 'string') {
+                stepHistory.push(step);
+            }
+
+            if (step === 2 && data.origenIngresos === 'ya_soy_pensionado') {
+                step = 'pensionado_info';
+            } else if (step === 'pensionado_info') {
+                step = 10;
             } else if (step === 4 && data.cotizaActualmente === 'no') {
                 step = 'no_cotiza_advertencia';
-            } else if (step === 'no_cotiza_advertencia') { 
-                step = 10; 
-            } else if (step === 6 && data.cotizaSobreIngreso === 'si') { 
-                step = 8; 
+            } else if (step === 'no_cotiza_advertencia') {
+                step = 10;
+            } else if (step === 6 && data.cotizaSobreIngreso === 'si') {
+                step = 8;
             } else if (step === 8) {
                 calcularPension();
                 step = 9;
-            } else if (step === 10 && data.quiereCotizacion === 'no') { 
-                step = 'final_no'; 
-            } else if (step === 10 && data.quiereCotizacion === 'si') { 
-                step = 11; 
-            } else if (step === 11) { 
-                step = 12; 
-            } else if (step === 12) { 
-                step = 13; 
-            } else if (step === 13) { 
-                step = 'final_si'; 
-            } else { 
-                step++; 
-            } 
-            
+            } else if (step === 10 && data.quiereCotizacion === 'no') {
+                step = 'final_no';
+            } else if (step === 10 && data.quiereCotizacion === 'si') {
+                step = 11;
+            } else if (step === 11) {
+                step = 12;
+            } else if (step === 12) {
+                step = 13;
+            } else if (step === 13) {
+                step = 'final_si';
+            } else {
+                step++;
+            }
+
             render();
         }
 
