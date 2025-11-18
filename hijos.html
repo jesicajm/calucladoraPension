@@ -364,7 +364,7 @@
         !function (f, b, e, v, n, t, s) {
             if (f.fbq) return; n = f.fbq = function () {
                 n.callMethod ?
-                n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
             };
             if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
             n.queue = []; t = b.createElement(e); t.async = !0;
@@ -565,7 +565,6 @@
 
             return porcentajeAplicable;
         }
-
         function calcularPension() {
             const anos = parseFloat(data.anosCotizados) || 0;
             const semanas = anos * 52;
@@ -575,19 +574,33 @@
             const ibl = ibc * 0.625;
             const porcentajeSobrevivencia = obtenerPorcentajeSobrevivencia(semanas);
 
-            let pensionSobrevivencia = ibl * porcentajeSobrevivencia;
+            let pensionSobrevivencia = 0;
+            let aplicaSalarioMinimo = false;
+            let cumpleRequisitos = false;
 
-            if (pensionSobrevivencia < SALARIO_MINIMO_2025 && semanas >= 549) {
-                pensionSobrevivencia = SALARIO_MINIMO_2025;
+            // LÓGICA CORREGIDA: Verificar si cotiza actualmente
+            if (data.cotizaActualmente === 'si') {
+                // Si cotiza, siempre recibe mínimo el salario mínimo
+                pensionSobrevivencia = ibl * porcentajeSobrevivencia;
+
+                // Garantizar salario mínimo si el cálculo da menos
+                if (pensionSobrevivencia < SALARIO_MINIMO_2025) {
+                    pensionSobrevivencia = SALARIO_MINIMO_2025;
+                    aplicaSalarioMinimo = true;
+                }
+
+                cumpleRequisitos = true;
+            } else {
+                // Si NO cotiza, NO recibe pensión
+                pensionSobrevivencia = 0;
+                cumpleRequisitos = false;
+                aplicaSalarioMinimo = false;
             }
 
-            const cumpleRequisitos = semanas >= 549;
             const numHijos = parseInt(data.numeroHijos) || 0;
-
             const ingresoActual = ingreso;
             const brecha = Math.max(0, ingresoActual - pensionSobrevivencia);
             const porcentajeBrecha = ingresoActual > 0 ? ((brecha / ingresoActual) * 100).toFixed(1) : 0;
-
             const esSuficiente = brecha < (ingresoActual * 0.30);
 
             resultado = {
@@ -600,7 +613,9 @@
                 porcentajeBrecha,
                 cumpleRequisitos,
                 numHijos,
-                esSuficiente
+                esSuficiente,
+                aplicaSalarioMinimo,
+                cotizaActualmente: data.cotizaActualmente
             };
         }
 
@@ -960,107 +975,148 @@
                 case 9:
                     const mensajeSuficiencia = resultado.esSuficiente
                         ? `<div class="result-item bg-green">
-                            <p class="result-label">✅ Análisis de suficiencia</p>
-                            <p class="text-green" style="font-size: 1rem; font-weight: 600;">
-                                La pensión de sobrevivencia cubriría adecuadamente las necesidades básicas de tu
-                                familia
-                            </p>
-                            <p class="result-note">La brecha es menor al 30% de tus ingresos actuales</p>
-                        </div>`
+            <p class="result-label">✅ Análisis de suficiencia</p>
+            <p class="text-green" style="font-size: 1rem; font-weight: 600;">
+                La pensión de sobrevivencia cubriría adecuadamente las necesidades básicas de tu
+                familia
+            </p>
+            <p class="result-note">La brecha es menor al 30% de tus ingresos actuales</p>
+        </div>`
                         : `<div class="result-item bg-red">
-                            <p class="result-label">⚠️ Análisis de suficiencia</p>
-                            <p class="text-red" style="font-size: 1rem; font-weight: 600;">
-                                La pensión de sobrevivencia NO sería suficiente para mantener el nivel de vida
-                                actual de tu familia
-                            </p>
-                            <p class="result-note">Existe una brecha significativa del
-                                ${resultado.porcentajeBrecha}%</p>
-                        </div>`;
+            <p class="result-label">⚠️ Análisis de suficiencia</p>
+            <p class="text-red" style="font-size: 1rem; font-weight: 600;">
+                La pensión de sobrevivencia NO sería suficiente para mantener el nivel de vida
+                actual de tu familia
+            </p>
+            <p class="result-note">Existe una brecha significativa del
+                ${resultado.porcentajeBrecha}%</p>
+        </div>`;
 
-                    const alertaSemanas = resultado.semanas < 549 ? `<div class="alert-box">
-                            <p><strong>⚠️ ATENCIÓN:</strong> Con ${formatNumber(resultado.semanas)} semanas
-                                cotizadas (${Math.floor(parseFloat(data.anosCotizados))} años), NO cumples el
-                                requisito mínimo de 549 semanas (10.5 años) para pensión de sobrevivencia. Tu
-                                familia no recibiría pensión.</p>
-                        </div>`
+                    // Mensaje cuando NO cotiza
+                    const alertaNoCotiza = data.cotizaActualmente === 'no' ? `<div class="alert-box" style="background-color: #fee2e2; border-color: #fca5a5;">
+            <p><strong>🚫 ATENCIÓN:</strong> Como NO cotizas actualmente a pensión, 
+            <strong>tu familia NO recibiría ninguna pensión de sobrevivencia</strong> si algo te llegara a pasar.</p>
+        </div>`
                         : '';
 
+                    // Mensaje cuando SÍ cotiza pero tiene pocas semanas
+                    const alertaSemanas = data.cotizaActualmente === 'si' && resultado.semanas < 549 ? `<div class="info-box" style="background-color: #fef3c7; border-color: #fbbf24;">
+            <p><strong>⚠️ IMPORTANTE:</strong> Aunque actualmente cotizas, solo llevas ${formatNumber(resultado.semanas)} semanas 
+            (${Math.floor(parseFloat(data.anosCotizados))} años). Sin embargo, <strong>tu familia recibiría el salario mínimo legal vigente 
+            (${formatCurrency(SALARIO_MINIMO_2025)})</strong> como pensión de sobrevivencia por el hecho de que estás cotizando.</p>
+        </div>`
+                        : '';
+
+                    // Mensaje cuando se aplica salario mínimo
+                    const mensajeSalarioMinimo = resultado.aplicaSalarioMinimo ? `
+        <div class="info-box" style="background-color: #dbeafe; border-color: #93c5fd;">
+            <p><strong>💰 Ajuste por Salario Mínimo:</strong> Aunque el cálculo basado en tus semanas cotizadas 
+            daría un valor menor, la pensión se garantiza con el salario mínimo legal vigente 
+            (${formatCurrency(SALARIO_MINIMO_2025)}) porque estás cotizando actualmente.</p>
+        </div>
+    ` : '';
+
                     content.innerHTML = `
-                    <div class="results-box">
-                        <h2 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
-                            <svg width="32" height="32" style="color: #16a34a;" viewBox="0 0 24 24"
-                                fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                            </svg>
-                            Resultados de tu Pensión de Sobrevivencia
-                        </h2>
+    <div class="results-box">
+        <h2 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+            <svg width="32" height="32" style="color: #16a34a;" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Resultados de tu Pensión de Sobrevivencia
+        </h2>
 
-                        ${alertaSemanas}
+        ${alertaNoCotiza}
+        ${alertaSemanas}
 
-                        <div class="result-item bg-blue">
-                            <p class="result-label">📊 Datos de cotización</p>
-                            <p style="font-size: 1rem; color: #1f2937; margin-bottom: 0.5rem;">
-                                <strong>Semanas cotizadas:</strong> ${formatNumber(resultado.semanas)}
-                                semanas (${Math.floor(parseFloat(data.anosCotizados))} años)
-                            </p>
-                            <p style="font-size: 1rem; color: #1f2937;">
-                                <strong>Porcentaje aplicable:</strong>
-                                ${resultado.porcentajeSobrevivencia}% del IBL
-                            </p>
-                            <p class="result-note">Ingreso Base de Liquidación (IBL):
-                                ${formatCurrency(resultado.ibl)}</p>
-                        </div>
+        ${data.cotizaActualmente === 'si' ? `
+        <div class="result-item bg-blue">
+            <p class="result-label">📊 Datos de cotización</p>
+            <p style="font-size: 1rem; color: #1f2937; margin-bottom: 0.5rem;">
+                <strong>Semanas cotizadas:</strong> ${formatNumber(resultado.semanas)}
+                semanas (${Math.floor(parseFloat(data.anosCotizados))} años)
+            </p>
+            <p style="font-size: 1rem; color: #1f2937;">
+                <strong>Porcentaje aplicable:</strong>
+                ${resultado.porcentajeSobrevivencia}% del IBL
+            </p>
+            <p class="result-note">Ingreso Base de Liquidación (IBL):
+                ${formatCurrency(resultado.ibl)}</p>
+        </div>
 
-                        <div class="result-item bg-green">
-                            <p class="result-label">💰 Pensión de sobrevivencia estimada</p>
-                            <p class="result-value text-green">
-                                ${formatCurrency(resultado.pensionSobrevivencia)}</p>
-                            <p class="result-note">Esta es la pensión mensual que recibiría tu familia
-                                (cónyuge e hijos)</p>
-                        </div>
+        ${mensajeSalarioMinimo}
 
-                        <div class="result-item bg-red">
-                            <p class="result-label">📉 Brecha pensional</p>
-                            <p class="result-value text-red">${formatCurrency(resultado.brecha)}</p>
-                            <p class="result-note">(${resultado.porcentajeBrecha}% de tus ingresos
-                                actuales)</p>
-                        </div>
+        <div class="result-item bg-green">
+            <p class="result-label">💰 Pensión de sobrevivencia estimada</p>
+            <p class="result-value text-green">
+                ${formatCurrency(resultado.pensionSobrevivencia)}</p>
+            <p class="result-note">Esta es la pensión mensual que recibiría tu familia
+                (cónyuge e hijos)</p>
+        </div>
 
-                        ${mensajeSuficiencia}
+        <div class="result-item bg-red">
+            <p class="result-label">📉 Brecha pensional</p>
+            <p class="result-value text-red">${formatCurrency(resultado.brecha)}</p>
+            <p class="result-note">(${resultado.porcentajeBrecha}% de tus ingresos
+                actuales)</p>
+        </div>
 
-                        ${resultado.numHijos > 0 ? `
-                        <div class="info-box">
-                            <p><strong>👨‍👩‍👧‍👦 Información importante sobre tus
-                                    ${resultado.numHijos} hijo(s):</strong></p>
-                            <p style="margin-top: 0.5rem;">• Esta pensión se pagaría <strong>solo
-                                    mientras tus hijos cumplan los requisitos</strong>:<br>
-                                - Sean menores de 18 años, o<br>
-                                - Tengan entre 18 y 25 años y estén estudiando, o<br>
-                                - Tengan discapacidad permanente</p>
-                            <p style="margin-top: 0.5rem;">• Una vez tus hijos cumplan 25 años o dejen
-                                de estudiar, la pensión quedaría solo para el cónyuge</p>
-                        </div>
-                        ` : ''}
+        ${mensajeSuficiencia}
 
-                        <div class="bg-yellow">
-                            <p style="font-size: 0.875rem; color: #374151;">
-                                <strong>⚠️ Importante:</strong> Esta brecha de
-                                ${formatCurrency(resultado.brecha)} es lo que tu familia dejaría de
-                                recibir mensualmente. Una póliza de vida puede cubrir esta diferencia y
-                                garantizar el bienestar de tus seres queridos.
-                            </p>
-                        </div>
-                    </div>
+        ${resultado.numHijos > 0 ? `
+        <div class="info-box">
+            <p><strong>👨‍👩‍👧‍👦 Información importante sobre tus
+                    ${resultado.numHijos} hijo(s):</strong></p>
+            <p style="margin-top: 0.5rem;">• Esta pensión se pagaría <strong>solo
+                    mientras tus hijos cumplan los requisitos</strong>:<br>
+                - Sean menores de 18 años, o<br>
+                - Tengan entre 18 y 25 años y estén estudiando, o<br>
+                - Tengan discapacidad permanente</p>
+            <p style="margin-top: 0.5rem;">• Una vez tus hijos cumplan 25 años o dejen
+                de estudiar, la pensión quedaría solo para el cónyuge</p>
+        </div>
+        ` : ''}
 
-                    <button class="button button-primary" onclick="window.handleNext()">
-                        Continuar
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
-                            stroke="currentColor" stroke-width="2">
-                            <polyline points="9 18 15 12 9 6"></polyline>
-                        </svg>
-                    </button>
-                    `;
+        <div class="bg-yellow">
+            <p style="font-size: 0.875rem; color: #374151;">
+                <strong>⚠️ Importante:</strong> Esta brecha de
+                ${formatCurrency(resultado.brecha)} es lo que tu familia dejaría de
+                recibir mensualmente. Una póliza de vida puede cubrir esta diferencia y
+                garantizar el bienestar de tus seres queridos.
+            </p>
+        </div>
+        ` : `
+        <div class="result-item bg-red">
+            <p class="result-label">❌ Sin pensión de sobrevivencia</p>
+            <p class="result-value text-red">$0</p>
+            <p class="result-note">Al no cotizar actualmente, no hay derecho a pensión</p>
+        </div>
+
+        <div class="result-item bg-red">
+            <p class="result-label">📉 Pérdida total de ingresos</p>
+            <p class="result-value text-red">${formatCurrency(parseFloat(data.ingresoMensual))}</p>
+            <p class="result-note">100% de tus ingresos actuales que tu familia perdería</p>
+        </div>
+
+        <div class="bg-yellow">
+            <p style="font-size: 0.875rem; color: #374151;">
+                <strong>🚨 CRÍTICO:</strong> Sin cotizar a pensión, tu familia quedaría completamente desprotegida 
+                y perdería el 100% de tus ingresos (${formatCurrency(parseFloat(data.ingresoMensual))}/mes). 
+                Una póliza de vida es ESENCIAL para protegerlos.
+            </p>
+        </div>
+        `}
+    </div>
+
+    <button class="button button-primary" onclick="window.handleNext()">
+        Continuar
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+    </button>
+    `;
                     break;
 
                 case 'pensionado_info':
