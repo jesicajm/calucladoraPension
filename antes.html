@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ProtecciÃ³n Familiar</title>
+    <link rel="icon" href="icon-abba.png" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(to bottom right, #eff6ff, #e0e7ff);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1rem;
+        }
+
+        .container {
+            max-width: 48rem;
+            width: 100%;
+            background: white;
+            border-radius: 1rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            padding: 2rem;
+        }
+
+        .header {
+            margin-bottom: 2rem;
+        }
+
+        .header-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .header-title h1 {
+            font-size: 1.25rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .navigation-buttons {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .nav-button {
+            padding: 0.5rem 1rem;
+            background-color: #f3f4f6;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #4b5563;
+            transition: all 0.2s;
+        }
+
+        .nav-button:hover {
+            background-color: #e5e7eb;
+            border-color: #9ca3af;
+        }
+
+        .nav-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 0.5rem;
+            background-color: #e5e7eb;
+            border-radius: 9999px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: #2563eb;
+            transition: width 0.3s ease;
+        }
+
+        .content {
+            margin-bottom: 2rem;
+        }
+
+        .icon-center {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .icon {
+            width: 4rem;
+            height: 4rem;
+        }
+
+        .icon-xl {
+            width: 5rem;
+            height: 5rem;
+        }
+
+        h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+            margin-bottom: 1.5rem;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        input[type="tel"],
+        input[type="email"] {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            font-size: 1.125rem;
+            border: 2px solid #d1d5db;
+            border-radius: 0.5rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        input:focus {
+            border-color: #2563eb;
+        }
+
+        .input-wrapper {
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+
+        .input-prefix {
+            position: absolute;
+            left: 1rem;
+            top: 0.75rem;
+            color: #6b7280;
+            font-size: 1.125rem;
+            pointer-events: none;
+        }
+
+        .input-with-prefix {
+            padding-left: 2.5rem;
+        }
+
+        .button {
+            width: 100%;
+            padding: 0.75rem 1.5rem;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: all 0.2s;
+        }
+
+        .button-primary {
+            background-color: #2563eb;
+            color: white;
+        }
+
+        .button-primary:hover:not(:disabled) {
+            background-color: #1d4ed8;
+        }
+
+        .button-secondary {
+            background-color: #4b5563;
+            color: white;
+        }
+
+        .button-secondary:hover {
+            background-color: #374151;
+        }
+
+        .button:disabled {
+            background-color: #d1d5db;
+            cursor: not-allowed;
+        }
+
+        .option-button {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            text-align: left;
+            border: 2px solid #d1d5db;
+            border-radius: 0.5rem;
+            background: white;
+            cursor: pointer;
+            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+
+        .option-button:hover {
+            border-color: #2563eb;
+            background-color: #eff6ff;
+        }
+
+        .results-box {
+            background-color: #eff6ff;
+            border: 2px solid #bfdbfe;
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .result-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .result-label {
+            font-size: 0.875rem;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+
+        .result-value {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #1f2937;
+        }
+
+        .result-note {
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 0.25rem;
+        }
+
+        .bg-green {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+        }
+
+        .text-green {
+            color: #15803d;
+        }
+
+        .bg-blue {
+            background-color: #eff6ff;
+            border: 1px solid #bfdbfe;
+        }
+
+        .text-blue {
+            color: #1d4ed8;
+        }
+
+        .bg-red {
+            background-color: #fef2f2;
+            border: 1px solid #fecaca;
+        }
+
+        .text-red {
+            color: #b91c1c;
+        }
+
+        .bg-yellow {
+            background-color: #fefce8;
+            border: 1px solid #fde047;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .bg-gray {
+            background-color: #f9fafb;
+            border: 2px solid #e5e7eb;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .info-box {
+            background-color: #f0f9ff;
+            border: 1px solid #bae6fd;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+            font-size: 0.875rem;
+            color: #0c4a6e;
+        }
+
+        .footer-text {
+            text-align: center;
+            font-size: 0.75rem;
+            color: #6b7280;
+            margin-top: 2rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        svg {
+            display: inline-block;
+        }
+
+        .alert-box {
+            background-color: #fef3c7;
+            border: 2px solid #fbbf24;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .alert-box p {
+            color: #92400e;
+            font-size: 0.875rem;
+            line-height: 1.5;
+        }
+
+        .loading {
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.875rem;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #2563eb;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+    <!-- Meta Pixel Code -->
+    <script>
+        !function (f, b, e, v, n, t, s) {
+            if (f.fbq) return; n = f.fbq = function () {
+                n.callMethod ?
+                    n.callMethod.apply(n, arguments) : n.queue.push(arguments)
+            };
+            if (!f._fbq) f._fbq = n; n.push = n; n.loaded = !0; n.version = '2.0';
+            n.queue = []; t = b.createElement(e); t.async = !0;
+            t.src = v; s = b.getElementsByTagName(e)[0];
+            s.parentNode.insertBefore(t, s)
+        }(window, document, 'script',
+            'https://connect.facebook.net/en_US/fbevents.js');
+        fbq('init', '4268884596673354');
+        fbq('track', 'PageView');
+    </script>
+    <noscript><img height="1" width="1" style="display:none"
+            src="https://www.facebook.com/tr?id=4268884596673354&ev=PageView&noscript=1" /></noscript>
+    <!-- End Meta Pixel Code -->
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-title">
+                <svg class="icon" style="color: #ef4444;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                    stroke-width="2">
+                    <path
+                        d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z">
+                    </path>
+                </svg>
+                <h1>ProtecciÃ³n Familiar Colombia</h1>
+            </div>
+            <div class="navigation-buttons" id="navigationButtons"></div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="content" id="content"></div>
+
+        <div class="footer-text">
+            <p>ðŸ”’ Tus datos estÃ¡n protegidos y serÃ¡n usados Ãºnicamente para ofrecerte asesorÃ­a personalizada</p>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js";
+
+        // ConfiguraciÃ³n de Firebase
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNdCZZ3ZHnAb4N9wMJpt4Mrn5-DKBvuFE",
+            authDomain: "padres-vida.firebaseapp.com",
+            projectId: "padres-vida",
+            storageBucket: "padres-vida.firebasestorage.app",
+            messagingSenderId: "358254237263",
+            appId: "1:358254237263:web:f8f9ef3114ccc6c5fa7c3a",
+            measurementId: "G-64HFVNPCRM"
+        };
+
+        // Inicializar Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        // ðŸ”¹ Funciones auxiliares para Meta cookies
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(";").shift();
+            return null;
+        }
+
+        function getFbcFromUrl() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const fbclid = urlParams.get("fbclid");
+            if (fbclid) {
+                const timestamp = Date.now();
+                return `fb.1.${Math.floor(timestamp / 1000)}.${fbclid}`;
+            }
+            return null;
+        }
+
+        const SALARIO_MINIMO_2025 = 1423500;
+
+        let step = 1;
+        let stepHistory = [];
+        let data = {
+            nombre: '',
+            origenIngresos: '',
+            ingresoMensual: '',
+            cotizaActualmente: '',
+            anosCotizados: '',
+            semanasCotizadas: '',
+            cotizaSobreIngreso: '',
+            valorCotizacion: '',
+            quiereCotizacion: '',
+            cedula: '',
+            numeroHijos: '',
+            numeroWhatsapp: '',
+            email: ''
+        };
+        let resultado = null;
+
+        const tablaPorcentajesSobrevivencia = [
+            { semanas: 549, porcentaje: 0.45 },
+            { semanas: 550, porcentaje: 0.47 },
+            { semanas: 600, porcentaje: 0.49 },
+            { semanas: 650, porcentaje: 0.51 },
+            { semanas: 700, porcentaje: 0.53 },
+            { semanas: 750, porcentaje: 0.55 },
+            { semanas: 800, porcentaje: 0.57 },
+            { semanas: 850, porcentaje: 0.59 },
+            { semanas: 900, porcentaje: 0.61 },
+            { semanas: 950, porcentaje: 0.63 },
+            { semanas: 1000, porcentaje: 0.65 },
+            { semanas: 1050, porcentaje: 0.67 },
+            { semanas: 1100, porcentaje: 0.69 },
+            { semanas: 1150, porcentaje: 0.71 },
+            { semanas: 1200, porcentaje: 0.73 },
+            { semanas: 1250, porcentaje: 0.75 }
+        ];
+
+        async function guardarSolicitudCotizacion() {
+            try {
+                // Obtener IP pÃºblica
+                const ipResponse = await fetch("https://api.ipify.org?format=json");
+                const ipData = await ipResponse.json();
+                const ip = ipData.ip;
+
+                // Obtener user agent
+                const userAgent = navigator.userAgent;
+
+                // Obtener datos de Facebook cookies
+                const fbp = getCookie("_fbp") || null;
+                const fbc = getFbcFromUrl() || getCookie("_fbc") || null;
+
+                const solicitud = {
+                    name: data.nombre,
+                    cedula: data.cedula,
+                    phone: data.numeroWhatsapp,
+                    email: data.email,
+                    ingresoMensual: parseFloat(data.ingresoMensual),
+                    origenIngresos: data.origenIngresos,
+                    cotizaActualmente: data.cotizaActualmente,
+                    anosCotizados: data.anosCotizados,
+                    numeroHijos: data.numeroHijos,
+                    ip,
+                    user_agent: userAgent,
+                    fbp,
+                    fbc,
+                    resultado: resultado,
+                    timestamp: serverTimestamp()
+                }
+
+                // Guardar en Firestore
+                const docRef = await addDoc(collection(db, "solicitudes_cotizacion"), solicitud);
+
+                console.log("âœ… Solicitud enviada correctamente. Documento creado:", docRef.id);
+            } catch (error) {
+                console.error("âŒ Error al guardar la solicitud:", error);
+            }
+        }
+
+        function formatCurrency(value) {
+            return new Intl.NumberFormat('es-CO', {
+                style: 'currency',
+                currency: 'COP',
+                minimumFractionDigits: 0
+            }).format(value);
+        }
+
+        function formatNumber(value) {
+            return new Intl.NumberFormat('es-CO', {
+                minimumFractionDigits: 0,
+                maximumFractionDigits: 0
+            }).format(value);
+        }
+
+        function formatInputCurrency(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value) {
+                input.value = formatNumber(parseInt(value));
+            }
+        }
+
+        function obtenerPorcentajeSobrevivencia(semanas) {
+            if (semanas < 549) {
+                return 0;
+            }
+            if (semanas >= 1250) {
+                return 0.75;
+            }
+
+            let porcentajeAplicable = 0.45;
+
+            for (let i = 0; i < tablaPorcentajesSobrevivencia.length; i++) {
+                if (semanas >= tablaPorcentajesSobrevivencia[i].semanas) {
+                    porcentajeAplicable = tablaPorcentajesSobrevivencia[i].porcentaje;
+                } else {
+                    break;
+                }
+            }
+
+            return porcentajeAplicable;
+        }
+
+        function calcularPension() {
+            const anos = parseFloat(data.anosCotizados) || 0;
+            const semanas = anos * 52;
+            const ingreso = parseFloat(data.ingresoMensual) || 0;
+
+            const ibc = data.cotizaSobreIngreso === 'si' ? ingreso : (parseFloat(data.valorCotizacion) || ingreso);
+            const ibl = ibc * 0.625;
+            const porcentajeSobrevivencia = obtenerPorcentajeSobrevivencia(semanas);
+
+            let pensionSobrevivencia = ibl * porcentajeSobrevivencia;
+
+            if (pensionSobrevivencia < SALARIO_MINIMO_2025 && semanas >= 549) {
+                pensionSobrevivencia = SALARIO_MINIMO_2025;
+            }
+
+            const cumpleRequisitos = semanas >= 549;
+            const numHijos = parseInt(data.numeroHijos) || 0;
+
+            const ingresoActual = ingreso;
+            const brecha = Math.max(0, ingresoActual - pensionSobrevivencia);
+            const porcentajeBrecha = ingresoActual > 0 ? ((brecha / ingresoActual) * 100).toFixed(1) : 0;
+
+            const esSuficiente = brecha < (ingresoActual * 0.30);
+
+            resultado = {
+                ibc: ibc,
+                ibl: ibl,
+                pensionSobrevivencia,
+                porcentajeSobrevivencia: (porcentajeSobrevivencia * 100).toFixed(0),
+                semanas: Math.round(semanas),
+                brecha,
+                porcentajeBrecha,
+                cumpleRequisitos,
+                numHijos,
+                esSuficiente
+            };
+        }
+
+        function updateData(field, value) {
+            data[field] = value;
+        }
+
+        function handleNext() {
+            if (typeof step === 'number' || typeof step === 'string') {
+                stepHistory.push(step);
+            }
+
+            if (step === 2 && data.origenIngresos === 'ya_soy_pensionado') {
+                step = 'pensionado_info';
+            } else if (step === 'pensionado_info') {
+                step = 10;
+            } else if (step === 4 && data.cotizaActualmente === 'no') {
+                step = 'no_cotiza_advertencia';
+            } else if (step === 'no_cotiza_advertencia') {
+                step = 10;
+            } else if (step === 6 && data.cotizaSobreIngreso === 'si') {
+                step = 8;
+            } else if (step === 8) {
+                calcularPension();
+                step = 9;
+            } else if (step === 10 && data.quiereCotizacion === 'no') {
+                step = 'final_no';
+            } else if (step === 10 && data.quiereCotizacion === 'si') {
+                step = 11;
+            } else if (step === 11) {
+                step = 12;
+            } else if (step === 12) {
+                step = 13;
+            } else if (step === 13) {
+                step = 'final_si';
+            } else {
+                step++;
+            }
+
+            render();
+        }
+
+        function handleBack() {
+            if (stepHistory.length > 0) {
+                step = stepHistory.pop();
+                render();
+            }
+        }
+
+        function handleRestart() {
+            stepHistory = [];
+            step = 1;
+            data = {
+                nombre: '',
+                origenIngresos: '',
+                ingresoMensual: '',
+                cotizaActualmente: '',
+                anosCotizados: '',
+                semanasCotizadas: '',
+                cotizaSobreIngreso: '',
+                valorCotizacion: '',
+                quiereCotizacion: '',
+                cedula: '',
+                numeroHijos: '',
+                numeroWhatsapp: '',
+                email: ''
+            };
+            resultado = null;
+            render();
+        }
+
+        function resetForm() {
+            stepHistory = [];
+            step = 1;
+            data = {
+                nombre: '',
+                origenIngresos: '',
+                ingresoMensual: '',
+                cotizaActualmente: '',
+                anosCotizados: '',
+                semanasCotizadas: '',
+                cotizaSobreIngreso: '',
+                valorCotizacion: '',
+                quiereCotizacion: '',
+                cedula: '',
+                numeroHijos: '',
+                numeroWhatsapp: '',
+                email: ''
+            };
+            resultado = null;
+            render();
+        }
+
+        function updateNavigationButtons() {
+            const navContainer = document.getElementById('navigationButtons');
+            const canGoBack = stepHistory.length > 0;
+            const isNotFinal = step !== 'final_si' && step !== 'final_no';
+
+            if (isNotFinal && step !== 1) {
+                navContainer.innerHTML = `
+                    <button class="nav-button" onclick="window.handleBack()" ${!canGoBack ? 'disabled' : ''}>
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="15 18 9 12 15 6"></polyline>
+                        </svg>
+                        AtrÃ¡s
+                    </button>
+                    <button class="nav-button" onclick="window.handleRestart()">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                            <path d="M21 3v5h-5"></path>
+                            <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                            <path d="M3 21v-5h5"></path>
+                        </svg>
+                        Reiniciar
+                    </button>
+                `;
+            } else {
+                navContainer.innerHTML = '';
+            }
+        }
+
+        function updateProgress() {
+            const progressBar = document.getElementById('progressBar');
+            if (step === 'final_si' || step === 'final_no') {
+                progressBar.style.width = '100%';
+            } else if (step === 'pensionado_info' || step === 'no_cotiza_advertencia') {
+                progressBar.style.width = '70%';
+            } else if (typeof step === 'number') {
+                progressBar.style.width = `${(step / 13) * 100}%`;
+            }
+        }
+
+        function render() {
+            updateProgress();
+            updateNavigationButtons();
+            const content = document.getElementById('content');
+
+            switch (step) {
+                case 1:
+                    content.innerHTML = `
+                    <div class="icon-center">
+                        <svg class="icon" style="color: #2563eb;" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h2 class="text-center">Â¿CuÃ¡l es tu nombre?</h2>
+                    <div class="input-wrapper">
+                        <input type="text" id="nombre" placeholder="Escribe tu nombre" autofocus>
+                    </div>
+                    <button class="button button-primary" id="nextBtn" disabled>
+                        Continuar
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    `;
+
+                    const nombreInput = document.getElementById('nombre');
+                    const nextBtn = document.getElementById('nextBtn');
+
+                    if (data.nombre) {
+                        nombreInput.value = data.nombre;
+                        nextBtn.disabled = false;
+                    }
+
+                    nombreInput.addEventListener('input', (e) => {
+                        updateData('nombre', e.target.value);
+                        nextBtn.disabled = !e.target.value;
+                    });
+                    nextBtn.addEventListener('click', handleNext);
+                    break;
+
+                case 2:
+                    content.innerHTML = `
+                    <h2>${data.nombre}, calculemos tu pensiÃ³n Â¿De dÃ³nde provienen tus ingresos?</h2>
+                    <button class="option-button" data-value="trabajo_independiente">Trabajo independiente</button>
+                    <button class="option-button" data-value="empleado">Empleado</button>
+                    <button class="option-button" data-value="empresario">Empresario</button>
+                    <button class="option-button" data-value="ya_soy_pensionado">Ya soy pensionado</button>
+                    `;
+
+                    document.querySelectorAll('.option-button').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            updateData('origenIngresos', e.target.dataset.value);
+                            setTimeout(handleNext, 300);
+                        });
+                    });
+                    break;
+
+                case 3:
+                    content.innerHTML = `
+                    <h2>Â¿CuÃ¡l es tu ingreso mensual actual?</h2>
+                    <div class="input-wrapper">
+                        <input type="text" id="ingreso" class="input-with-prefix" placeholder="0" autofocus>
+                    </div>
+                    <div class="info-box">
+                        <p>ðŸ’¡ Este serÃ¡ considerado como tu Ingreso Base de CotizaciÃ³n (IBC) para el cÃ¡lculo.</p>
+                    </div>
+                    <button class="button button-primary" id="nextBtn" disabled>
+                        Continuar
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    `;
+
+                    const ingresoInput = document.getElementById('ingreso');
+                    const ingresoBtn = document.getElementById('nextBtn');
+
+                    if (data.ingresoMensual) {
+                        ingresoInput.value = formatNumber(parseFloat(data.ingresoMensual));
+                    }
+
+                    ingresoInput.addEventListener('input', (e) => {
+                        formatInputCurrency(e.target);
+                        const rawValue = e.target.value.replace(/\./g, '');
+                        updateData('ingresoMensual', rawValue);
+                        ingresoBtn.disabled = !rawValue || parseFloat(rawValue) <= 0;
+                    });
+                    ingresoBtn.addEventListener('click', handleNext);
+                    break;
+
+                case 4:
+                    content.innerHTML = `
+                    <h2>Â¿Cotizas a pensiÃ³n obligatoria actualmente?</h2>
+                    <button class="option-button" data-value="si">SÃ­</button>
+                    <button class="option-button" data-value="no">No</button>
+                    `;
+
+                    document.querySelectorAll('.option-button').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            updateData('cotizaActualmente', e.target.dataset.value);
+                            setTimeout(handleNext, 300);
+                        });
+                    });
+                    break;
+
+                case 5:
+                    content.innerHTML = `
+                    <h2>Â¿CuÃ¡ntos aÃ±os llevas cotizando?</h2>
+                    <div class="input-wrapper">
+                        <input type="number" id="anos" placeholder="AÃ±os" autofocus>
+                    </div>
+                    <div class="info-box">
+                        <p>ðŸ“Š Necesitas mÃ­nimo 10.5 aÃ±os (549 semanas) cotizados para tener derecho a pensiÃ³n de
+                            sobrevivencia.</p>
+                    </div>
+                    <button class="button button-primary" id="nextBtn" disabled>
+                        Continuar
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    `;
+
+                    const anosInput = document.getElementById('anos');
+                    const anosBtn = document.getElementById('nextBtn');
+
+                    if (data.anosCotizados) {
+                        anosInput.value = data.anosCotizados;
+                    }
+
+                    anosInput.addEventListener('input', (e) => {
+                        updateData('anosCotizados', e.target.value);
+                        anosBtn.disabled = !e.target.value || parseFloat(e.target.value) < 0;
+                    });
+                    anosBtn.addEventListener('click', handleNext);
+                    break;
+
+                case 6:
+                    content.innerHTML = `
+                    <h2>Â¿Cotizas sobre ${formatCurrency(parseFloat(data.ingresoMensual))}?</h2>
+                    <button class="option-button" data-value="si">SÃ­</button>
+                    <button class="option-button" data-value="no">No</button>
+                    `;
+
+                    document.querySelectorAll('.option-button').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            updateData('cotizaSobreIngreso', e.target.dataset.value);
+                            setTimeout(handleNext, 300);
+                        });
+                    });
+                    break;
+
+                case 7:
+                    content.innerHTML = `
+                    <h2>Â¿Sobre quÃ© valor cotizas?</h2>
+                    <div class="input-wrapper">
+                        <input type="text" id="valor" class="input-with-prefix" placeholder="0" autofocus>
+                    </div>
+                    <button class="button button-primary" id="nextBtn" disabled>
+                        Continuar
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    `;
+
+                    const valorInput = document.getElementById('valor');
+                    const valorBtn = document.getElementById('nextBtn');
+
+                    if (data.valorCotizacion) {
+                        valorInput.value = formatNumber(parseFloat(data.valorCotizacion));
+                    }
+
+                    valorInput.addEventListener('input', (e) => {
+                        formatInputCurrency(e.target);
+                        const rawValue = e.target.value.replace(/\./g, '');
+                        updateData('valorCotizacion', rawValue);
+                        valorBtn.disabled = !rawValue || parseFloat(rawValue) <= 0;
+                    });
+                    valorBtn.addEventListener('click', handleNext);
+                    break;
+
+                case 8:
+                    content.innerHTML = `
+                    <h2>Â¿CuÃ¡ntos hijos menores de edad o dependientes tienes?</h2>
+                    <div class="input-wrapper">
+                        <input type="number" id="hijos" placeholder="NÃºmero de hijos" min="0" autofocus>
+                    </div>
+                    <div class="info-box">
+                        <p>ðŸ‘¨â€ðŸ‘©â€ðŸ‘§â€ðŸ‘¦ <strong>Requisitos para que tus hijos reciban la pensiÃ³n:</strong><br>
+                            â€¢ Ser menores de 18 aÃ±os, o<br>
+                            â€¢ Tener entre 18 y 25 aÃ±os y estar estudiando, o<br>
+                            â€¢ Tener discapacidad (sin lÃ­mite de edad)</p>
+                    </div>
+                    <button class="button button-primary" id="nextBtn" disabled>
+                        Calcular
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    `;
+
+                    const hijosInput = document.getElementById('hijos');
+                    const hijosBtn = document.getElementById('nextBtn');
+
+                    if (data.numeroHijos) {
+                        hijosInput.value = data.numeroHijos;
+                    }
+
+                    hijosInput.addEventListener('input', (e) => {
+                        updateData('numeroHijos', e.target.value);
+                        hijosBtn.disabled = e.target.value === '';
+                    });
+                    hijosBtn.addEventListener('click', handleNext);
+                    break;
+
+                case 9:
+                    const mensajeSuficiencia = resultado.esSuficiente
+                        ? `<div class="result-item bg-green">
+            <p class="result-label">âœ… AnÃ¡lisis de suficiencia</p>
+            <p class="text-green" style="font-size: 1rem; font-weight: 600;">
+                La pensiÃ³n de sobrevivencia cubrirÃ­a adecuadamente las necesidades bÃ¡sicas de tu
+                familia
+            </p>
+            <p class="result-note">La brecha es menor al 30% de tus ingresos actuales</p>
+        </div>`
+                        : `<div class="result-item bg-red">
+            <p class="result-label">âš ï¸ AnÃ¡lisis de suficiencia</p>
+            <p class="text-red" style="font-size: 1rem; font-weight: 600;">
+                La pensiÃ³n de sobrevivencia NO serÃ­a suficiente para mantener el nivel de vida
+                actual de tu familia
+            </p>
+            <p class="result-note">Existe una brecha significativa del
+                ${resultado.porcentajeBrecha}%</p>
+        </div>`;
+
+                    // Mensaje cuando NO cotiza
+                    const alertaNoCotiza = data.cotizaActualmente === 'no' ? `<div class="alert-box" style="background-color: #fee2e2; border-color: #fca5a5;">
+            <p><strong>ðŸš« ATENCIÃ“N:</strong> Como NO cotizas actualmente a pensiÃ³n, 
+            <strong>tu familia NO recibirÃ­a ninguna pensiÃ³n de sobrevivencia</strong> si algo te llegara a pasar.</p>
+        </div>`
+                        : '';
+
+                    // Mensaje cuando SÃ cotiza pero tiene pocas semanas
+                    const alertaSemanas = data.cotizaActualmente === 'si' && resultado.semanas < 549 ? `<div class="info-box" style="background-color: #fef3c7; border-color: #fbbf24;">
+            <p><strong>âš ï¸ IMPORTANTE:</strong> Aunque actualmente cotizas, solo llevas ${formatNumber(resultado.semanas)} semanas 
+            (${Math.floor(parseFloat(data.anosCotizados))} aÃ±os). Sin embargo, <strong>tu familia recibirÃ­a el salario mÃ­nimo legal vigente 
+            (${formatCurrency(SALARIO_MINIMO_2025)})</strong> como pensiÃ³n de sobrevivencia por el hecho de que estÃ¡s cotizando.</p>
+        </div>`
+                        : '';
+
+                    // Mensaje cuando se aplica salario mÃ­nimo
+                    const mensajeSalarioMinimo = resultado.aplicaSalarioMinimo ? `
+        <div class="info-box" style="background-color: #dbeafe; border-color: #93c5fd;">
+            <p><strong>ðŸ’° Ajuste por Salario MÃ­nimo:</strong> Aunque el cÃ¡lculo basado en tus semanas cotizadas 
+            darÃ­a un valor menor, la pensiÃ³n se garantiza con el salario mÃ­nimo legal vigente 
+            (${formatCurrency(SALARIO_MINIMO_2025)}) porque estÃ¡s cotizando actualmente.</p>
+        </div>
+    ` : '';
+
+                    content.innerHTML = `
+    <div class="results-box">
+        <h2 style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem;">
+            <svg width="32" height="32" style="color: #16a34a;" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+            </svg>
+            Resultados de tu PensiÃ³n de Sobrevivencia
+        </h2>
+
+        ${alertaNoCotiza}
+        ${alertaSemanas}
+
+        ${data.cotizaActualmente === 'si' ? `
+        <div class="result-item bg-blue">
+            <p class="result-label">ðŸ“Š Datos de cotizaciÃ³n</p>
+            <p style="font-size: 1rem; color: #1f2937; margin-bottom: 0.5rem;">
+                <strong>Semanas cotizadas:</strong> ${formatNumber(resultado.semanas)}
+                semanas (${Math.floor(parseFloat(data.anosCotizados))} aÃ±os)
+            </p>
+            <p style="font-size: 1rem; color: #1f2937;">
+                <strong>Porcentaje aplicable:</strong>
+                ${resultado.porcentajeSobrevivencia}% del IBL
+            </p>
+            <p class="result-note">Ingreso Base de LiquidaciÃ³n (IBL):
+                ${formatCurrency(resultado.ibl)}</p>
+        </div>
+
+        ${mensajeSalarioMinimo}
+
+        <div class="result-item bg-green">
+            <p class="result-label">ðŸ’° PensiÃ³n de sobrevivencia estimada</p>
+            <p class="result-value text-green">
+                ${formatCurrency(resultado.pensionSobrevivencia)}</p>
+            <p class="result-note">Esta es la pensiÃ³n mensual que recibirÃ­a tu familia
+                (cÃ³nyuge e hijos)</p>
+        </div>
+
+        <div class="result-item bg-red">
+            <p class="result-label">ðŸ“‰ Brecha pensional</p>
+            <p class="result-value text-red">${formatCurrency(resultado.brecha)}</p>
+            <p class="result-note">(${resultado.porcentajeBrecha}% de tus ingresos
+                actuales)</p>
+        </div>
+
+        ${mensajeSuficiencia}
+
+        ${resultado.numHijos > 0 ? `
+        <div class="info-box">
+            <p><strong>ðŸ‘¨â€ðŸ‘©â€ðŸ‘§â€ðŸ‘¦ InformaciÃ³n importante sobre tus
+                    ${resultado.numHijos} hijo(s):</strong></p>
+            <p style="margin-top: 0.5rem;">â€¢ Esta pensiÃ³n se pagarÃ­a <strong>solo
+                    mientras tus hijos cumplan los requisitos</strong>:<br>
+                - Sean menores de 18 aÃ±os, o<br>
+                - Tengan entre 18 y 25 aÃ±os y estÃ©n estudiando, o<br>
+                - Tengan discapacidad permanente</p>
+            <p style="margin-top: 0.5rem;">â€¢ Una vez tus hijos cumplan 25 aÃ±os o dejen
+                de estudiar, la pensiÃ³n quedarÃ­a solo para el cÃ³nyuge</p>
+        </div>
+        ` : ''}
+
+        <div class="bg-yellow">
+            <p style="font-size: 0.875rem; color: #374151;">
+                <strong>âš ï¸ Importante:</strong> Esta brecha de
+                ${formatCurrency(resultado.brecha)} es lo que tu familia dejarÃ­a de
+                recibir mensualmente. Una pÃ³liza de vida puede cubrir esta diferencia y
+                garantizar el bienestar de tus seres queridos.
+            </p>
+        </div>
+        ` : `
+        <div class="result-item bg-red">
+            <p class="result-label">âŒ Sin pensiÃ³n de sobrevivencia</p>
+            <p class="result-value text-red">$0</p>
+            <p class="result-note">Al no cotizar actualmente, no hay derecho a pensiÃ³n</p>
+        </div>
+
+        <div class="result-item bg-red">
+            <p class="result-label">ðŸ“‰ PÃ©rdida total de ingresos</p>
+            <p class="result-value text-red">${formatCurrency(parseFloat(data.ingresoMensual))}</p>
+            <p class="result-note">100% de tus ingresos actuales que tu familia perderÃ­a</p>
+        </div>
+
+        <div class="bg-yellow">
+            <p style="font-size: 0.875rem; color: #374151;">
+                <strong>ðŸš¨ CRÃTICO:</strong> Sin cotizar a pensiÃ³n, tu familia quedarÃ­a completamente desprotegida 
+                y perderÃ­a el 100% de tus ingresos (${formatCurrency(parseFloat(data.ingresoMensual))}/mes). 
+                Una pÃ³liza de vida es ESENCIAL para protegerlos.
+            </p>
+        </div>
+        `}
+    </div>
+
+    <button class="button button-primary" onclick="window.handleNext()">
+        Continuar
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+            stroke="currentColor" stroke-width="2">
+            <polyline points="9 18 15 12 9 6"></polyline>
+        </svg>
+    </button>
+    `;
+                    break;
+
+                case 'pensionado_info':
+                    content.innerHTML = `
+                    <div class="text-center">
+                        <div class="icon-center">
+                            <svg class="icon" style="color: #16a34a;" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <h2>Â¡Felicitaciones, ${data.nombre}!</h2>
+                        <div class="bg-green"
+                            style="padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1.5rem; text-align: left;">
+                            <p style="color: #166534; margin-bottom: 1rem; font-size: 1rem;">
+                                <strong>âœ… Ya cuentas con una pensiÃ³n</strong>
+                            </p>
+                            <p style="color: #374151; margin-bottom: 0.75rem;">
+                                Tus beneficiarios (cÃ³nyuge e hijos) tendrÃ­an derecho a recibir la
+                                pensiÃ³n de sobrevivencia si algo te llegara a pasar.
+                            </p>
+                            <p style="color: #374151;">
+                                Sin embargo, es importante considerar si el monto de esa pensiÃ³n serÃ¡
+                                suficiente para mantener su calidad de vida y cubrir todos sus gastos.
+                            </p>
+                        </div>
+                        <div class="bg-yellow">
+                            <p style="font-size: 0.875rem; color: #374151;">
+                                <strong>ðŸ’¡ Tip importante:</strong> Aunque tengas pensiÃ³n, una pÃ³liza de
+                                vida puede complementar los ingresos de tu familia y garantizar que no
+                                tengan dificultades econÃ³micas.
+                            </p>
+                        </div>
+                    </div>
+                    <button class="button button-primary" onclick="window.handleNext()"
+                        style="margin-top: 1.5rem;">
+                        Continuar
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    `;
+                    break;
+
+                case 'no_cotiza_advertencia':
+                    content.innerHTML = `
+                    <div class="text-center">
+                        <div class="icon-center">
+                            <svg class="icon-xl" style="color: #dc2626;" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <line x1="12" y1="8" x2="12" y2="12"></line>
+                                <line x1="12" y1="16" x2="12.01" y2="16"></line>
+                            </svg>
+                        </div>
+                        <h2>âš ï¸ SituaciÃ³n crÃ­tica detectada</h2>
+                        <div class="alert-box" style="margin-bottom: 1.5rem;">
+                            <p style="margin-bottom: 1rem; font-size: 1rem;">
+                                <strong>${data.nombre}, esto es lo que debes saber:</strong>
+                            </p>
+                            <p style="margin-bottom: 0.75rem;">
+                                ðŸš« Al <strong>NO cotizar a pensiÃ³n</strong>, si algo te llegara a pasar:
+                            </p>
+                            <ul style="list-style: none; padding-left: 1rem; margin-bottom: 1rem;">
+                                <li style="margin-bottom: 0.5rem;">âŒ Tus hijos NO recibirÃ­an ninguna
+                                    pensiÃ³n de sobrevivencia</li>
+                                <li style="margin-bottom: 0.5rem;">âŒ Tu cÃ³nyuge NO recibirÃ­a ningÃºn
+                                    ingreso del sistema pensional</li>
+                                <li style="margin-bottom: 0.5rem;">âŒ Tu familia quedarÃ­a en total
+                                    desprotecciÃ³n econÃ³mica</li>
+                            </ul>
+                        </div>
+
+                        <div class="bg-red"
+                            style="padding: 1.5rem; border-radius: 0.5rem; margin-bottom: 1.5rem; text-align: left;">
+                            <p
+                                style="color: #7f1d1d; font-weight: bold; margin-bottom: 0.75rem; font-size: 1rem;">
+                                ðŸš¨ El impacto real en tu familia:
+                            </p>
+                            <p style="color: #374151; margin-bottom: 0.5rem; font-size: 0.95rem;">
+                                â€¢ PerderÃ­an el <strong>100% de tus ingresos</strong> mensuales
+                                (${formatCurrency(parseFloat(data.ingresoMensual) || 0)})
+                            </p>
+                            <p style="color: #374151; margin-bottom: 0.5rem; font-size: 0.95rem;">
+                                â€¢ No habrÃ­a recursos para alimentaciÃ³n, educaciÃ³n, vivienda ni salud
+                            </p>
+                            <p style="color: #374151; font-size: 0.95rem;">
+                                â€¢ Tus hijos podrÃ­an tener que dejar de estudiar y trabajar
+                                prematuramente
+                            </p>
+                        </div>
+
+                        <div class="info-box">
+                            <p style="font-weight: bold; margin-bottom: 0.5rem;">ðŸ’¡ Â¿QuÃ© puedes hacer
+                                HOY?</p>
+                            <p style="margin-bottom: 0.5rem;">1. <strong>Empieza a cotizar a
+                                    pensiÃ³n</strong> cuanto antes (necesitas mÃ­nimo 10.5 aÃ±os)</p>
+                            <p>2. <strong>Contrata una pÃ³liza de vida</strong> que proteja a tu familia
+                                AHORA (no requiere aÃ±os de espera)</p>
+                        </div>
+
+                        <div class="bg-yellow" style="margin-top: 1rem;">
+                            <p style="font-size: 0.875rem; color: #374151;">
+                                <strong>ðŸ›¡ï¸ Una pÃ³liza de vida es tu red de protecciÃ³n
+                                    inmediata</strong><br>
+                                Desde hoy mismo, tu familia estarÃ­a protegida econÃ³micamente. No esperes
+                                aÃ±os cotizando, actÃºa ahora.
+                            </p>
+                        </div>
+                    </div>
+                    <button class="button button-primary" onclick="window.handleNext()"
+                        style="margin-top: 1.5rem;">
+                        Quiero proteger a mi familia
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    `;
+                    break;
+
+                case 10:
+                    content.innerHTML = `
+                    <h2>Â¿Quieres recibir una cotizaciÃ³n de pÃ³liza de vida a tu WhatsApp adaptada a tu
+                        perfil, ingresos y necesidades?</h2>
+                    <button class="option-button" data-value="si">SÃ­, quiero proteger a mi
+                        familia</button>
+                    <button class="option-button" data-value="no">No, gracias</button>
+                    `;
+
+                    document.querySelectorAll('.option-button').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            updateData('quiereCotizacion', e.target.dataset.value);
+                            setTimeout(handleNext, 300);
+                        });
+                    });
+                    break;
+
+                case 11:
+                    content.innerHTML = `
+                    <h2>Â¿CuÃ¡l es tu nÃºmero de WhatsApp?</h2>
+                    <div class="input-wrapper">
+                        <input type="tel" id="whatsapp" placeholder="300 123 4567" autofocus>
+                    </div>
+                    <button class="button button-primary" id="nextBtn" disabled>
+                        Continuar
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    `;
+
+                    const whatsappInput = document.getElementById('whatsapp');
+                    const whatsappBtn = document.getElementById('nextBtn');
+
+                    if (data.numeroWhatsapp) {
+                        whatsappInput.value = data.numeroWhatsapp;
+                    }
+
+                    whatsappInput.addEventListener('input', (e) => {
+                        updateData('numeroWhatsapp', e.target.value);
+                        whatsappBtn.disabled = !e.target.value;
+                    });
+                    whatsappBtn.addEventListener('click', handleNext);
+                    break;
+
+                case 12:
+                    content.innerHTML = `
+                    <h2>Â¿CuÃ¡l es tu correo electrÃ³nico?</h2>
+                    <div class="input-wrapper">
+                        <input type="email" id="email" placeholder="tu@email.com" autofocus>
+                    </div>
+                    <button class="button button-primary" id="nextBtn" disabled>
+                        Continuar
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    `;
+
+                    const emailInput = document.getElementById('email');
+                    const emailBtn = document.getElementById('nextBtn');
+
+                    if (data.email) {
+                        emailInput.value = data.email;
+                        emailBtn.disabled = false;
+                    }
+
+                    emailInput.addEventListener('input', (e) => {
+                        updateData('email', e.target.value);
+                        // ValidaciÃ³n bÃ¡sica de email
+                        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                        emailBtn.disabled = !emailRegex.test(e.target.value);
+                    });
+                    emailBtn.addEventListener('click', handleNext);
+                    break;
+
+                case 13:
+                    content.innerHTML = `
+                    <h2>Â¿CuÃ¡l es tu nÃºmero de cÃ©dula?</h2>
+                    <div class="input-wrapper">
+                        <input type="text" id="cedula" placeholder="1234567890" autofocus>
+                    </div>
+                    <button class="button button-primary" id="nextBtn" disabled>
+                        Finalizar
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                    </button>
+                    `;
+
+                    const cedulaInput = document.getElementById('cedula');
+                    const cedulaBtn = document.getElementById('nextBtn');
+
+                    if (data.cedula) {
+                        cedulaInput.value = data.cedula;
+                    }
+
+                    cedulaInput.addEventListener('input', (e) => {
+                        updateData('cedula', e.target.value);
+                        cedulaBtn.disabled = !e.target.value;
+                    });
+
+                    cedulaBtn.addEventListener('click', async () => {
+                        if (data.quiereCotizacion === 'si') {
+                            await guardarSolicitudCotizacion();
+                        }
+                        handleNext();
+                    });
+                    break;
+
+                case 'final_si':
+                    content.innerHTML = `
+                    <div class="text-center">
+                        <div class="icon-center">
+                            <svg class="icon-xl" style="color: #16a34a;" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                                <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                            </svg>
+                        </div>
+                        <h2>ðŸ“§ Â¡Listo, ${data.nombre}!</h2>
+                        <div class="bg-blue" style="text-align: left; margin-bottom: 1.5rem;">
+                            <p style="color: #374151; margin-bottom: 1rem;">
+                                En breve, uno de nuestros asesores te escribirÃ¡ por WhatsApp para
+                                mostrarte una opciÃ³n personalizada, diseÃ±ada para proteger a tu familia
+                                incluso si tÃº no estÃ¡s.
+                            </p>
+                            <p style="color: #4b5563; font-size: 0.875rem;">
+                                ðŸ’¡ <strong>Recuerda:</strong> No se trata de cuÃ¡nto ganas hoy, sino de
+                                quÃ© tan protegido estÃ¡s.
+                            </p>
+                        </div>
+                        <button class="button button-secondary" onclick="window.resetForm()">
+                            Realizar otra consulta
+                        </button>
+                    </div>
+                    `;
+                    break;
+
+                case 'final_no':
+                    content.innerHTML = `
+                    <div class="text-center">
+                        <div class="icon-center">
+                            <svg class="icon-xl" style="color: #4b5563;" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <polyline points="12 6 12 12 16 14"></polyline>
+                            </svg>
+                        </div>
+                        <h2>Entendemos que no estÃ©s listo ahora</h2>
+                        <div class="bg-gray" style="text-align: left; margin-bottom: 1.5rem;">
+                            <p style="color: #374151; margin-bottom: 1rem;">
+                                ðŸ• Cuando estÃ©s listo para proteger lo mÃ¡s importante, estaremos aquÃ­
+                                para ayudarte.
+                            </p>
+                            <p style="color: #4b5563; font-size: 0.875rem;">
+                                ðŸ“‹ <strong>Porque la vida no estÃ¡ garantizada, pero tu previsiÃ³n sÃ­
+                                    puede estarlo.</strong>
+                            </p>
+                            <p style="color: #4b5563; font-size: 0.875rem; margin-top: 1rem;">
+                                Gracias por completar el test. ðŸ’™
+                            </p>
+                        </div>
+                        <button class="button button-secondary" onclick="window.resetForm()">
+                            Realizar otra consulta
+                        </button>
+                    </div>
+                    `;
+                    break;
+            }
+        }
+
+        // Exponer funciones al scope global para que los botones puedan accederlas
+        window.handleNext = handleNext;
+        window.handleBack = handleBack;
+        window.handleRestart = handleRestart;
+        window.resetForm = resetForm;
+
+        // Inicializar la aplicaciÃ³n
+        render();
+    </script>
+</body>
+
+</html>

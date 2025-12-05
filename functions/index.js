@@ -16,6 +16,8 @@ function hashSha256(value) {
   return crypto.createHash("sha256").update(value || "").digest("hex");
 }
 
+
+
 // 🔥 Función: enviar evento a Meta cuando alguien solicita una cotización
 exports.enviarEventoMetaCotizacion = onDocumentCreated(
   {

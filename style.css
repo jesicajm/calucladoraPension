@@ -1,0 +1,582 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background: linear-gradient(to bottom right, #eff6ff, #e0e7ff);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+.container {
+    max-width: 48rem;
+    width: 100%;
+    background: white;
+    border-radius: 1rem;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+    padding: 2rem;
+}
+
+.header {
+    margin-bottom: 2rem;
+}
+
+.header-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.header-title h1 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+.navigation-buttons {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.nav-button {
+    padding: 0.5rem 1rem;
+    background-color: #f3f4f6;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    color: #4b5563;
+    transition: all 0.2s;
+}
+
+.nav-button:hover {
+    background-color: #e5e7eb;
+    border-color: #9ca3af;
+}
+
+.nav-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 0.5rem;
+    background-color: #e5e7eb;
+    border-radius: 9999px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    background-color: #2563eb;
+    transition: width 0.3s ease;
+}
+
+.content {
+    margin-bottom: 2rem;
+}
+
+.icon-center {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+}
+
+.icon {
+    width: 4rem;
+    height: 4rem;
+}
+
+.icon-xl {
+    width: 5rem;
+    height: 5rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 1.5rem;
+}
+
+.text-center {
+    text-align: center;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="tel"],
+input[type="email"] {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: 1.125rem;
+    border: 2px solid #d1d5db;
+    border-radius: 0.5rem;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+input:focus {
+    border-color: #2563eb;
+}
+
+.input-wrapper {
+    position: relative;
+    margin-bottom: 1.5rem;
+}
+
+.input-prefix {
+    position: absolute;
+    left: 1rem;
+    top: 0.75rem;
+    color: #6b7280;
+    font-size: 1.125rem;
+    pointer-events: none;
+}
+
+.input-with-prefix {
+    padding-left: 2.5rem;
+}
+
+.button {
+    width: 100%;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: all 0.2s;
+}
+
+.button-primary {
+    background-color: #2563eb;
+    color: white;
+}
+
+.button-primary:hover:not(:disabled) {
+    background-color: #1d4ed8;
+}
+
+.button-secondary {
+    background-color: #4b5563;
+    color: white;
+}
+
+.button-secondary:hover {
+    background-color: #374151;
+}
+
+.button:disabled {
+    background-color: #d1d5db;
+    cursor: not-allowed;
+}
+
+.option-button {
+    width: 100%;
+    padding: 1rem 1.5rem;
+    text-align: left;
+    border: 2px solid #d1d5db;
+    border-radius: 0.5rem;
+    background: white;
+    cursor: pointer;
+    margin-bottom: 0.75rem;
+    font-size: 1rem;
+    transition: all 0.2s;
+}
+
+.option-button:hover {
+    border-color: #2563eb;
+    background-color: #eff6ff;
+}
+
+.results-box {
+    background-color: #eff6ff;
+    border: 2px solid #bfdbfe;
+    border-radius: 0.5rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.result-item {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.result-item:last-child {
+    margin-bottom: 0;
+}
+
+.result-label {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.25rem;
+}
+
+.result-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+.result-note {
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 0.25rem;
+}
+
+.bg-green {
+    background-color: #f0fdf4;
+    border: 1px solid #bbf7d0;
+}
+
+.text-green {
+    color: #15803d;
+}
+
+.bg-blue {
+    background-color: #eff6ff;
+    border: 1px solid #bfdbfe;
+}
+
+.text-blue {
+    color: #1d4ed8;
+}
+
+.bg-red {
+    background-color: #fef2f2;
+    border: 1px solid #fecaca;
+}
+
+.text-red {
+    color: #b91c1c;
+}
+
+.bg-yellow {
+    background-color: #fefce8;
+    border: 1px solid #fde047;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+}
+
+.bg-gray {
+    background-color: #f9fafb;
+    border: 2px solid #e5e7eb;
+    padding: 1.5rem;
+    border-radius: 0.5rem;
+}
+
+.info-box {
+    background-color: #f0f9ff;
+    border: 1px solid #bae6fd;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+    font-size: 0.875rem;
+    color: #0c4a6e;
+}
+
+.footer-text {
+    text-align: center;
+    font-size: 0.75rem;
+    color: #6b7280;
+    margin-top: 2rem;
+}
+
+.hidden {
+    display: none;
+}
+
+svg {
+    display: inline-block;
+}
+
+.alert-box {
+    background-color: #fef3c7;
+    border: 2px solid #fbbf24;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-top: 1rem;
+}
+
+.alert-box p {
+    color: #92400e;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.loading {
+    text-align: center;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #2563eb;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Agregar estos estilos al final de tu archivo style.css */
+
+/* Plan de Ahorro en Dólares */
+.plan-ahorro-section {
+    background: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 100%);
+    border: 2px solid #10b981;
+    border-radius: 1rem;
+    padding: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.plan-intro {
+    background: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    margin-bottom: 1.5rem;
+    border-left: 4px solid #10b981;
+}
+
+.plan-intro p {
+    color: #374151;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.escenario-card {
+    background: white;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.escenario-hoy {
+    border-left: 4px solid #dc2626;
+}
+
+.escenario-futuro {
+    border-left: 4px solid #059669;
+}
+
+.escenario-card h3 {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.escenario-descripcion {
+    color: #4b5563;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.capital-objetivo {
+    background: linear-gradient(135deg, #fef3c7 0%, #fef9c3 100%);
+    border: 2px solid #f59e0b;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.capital-titulo {
+    font-size: 1.125rem;
+    font-weight: bold;
+    color: #92400e;
+    margin-bottom: 0.5rem;
+}
+
+.capital-subtitulo {
+    color: #78350f;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.calculo-aporte {
+    margin-top: 1.5rem;
+}
+
+.calculo-aporte h4 {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.calculo-aporte > p {
+    color: #4b5563;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.beneficios-list {
+    list-style: none;
+    padding-left: 0;
+    margin: 1rem 0;
+}
+
+.beneficios-list li {
+    color: #374151;
+    line-height: 1.8;
+    margin-bottom: 0.75rem;
+    padding-left: 1.5rem;
+    position: relative;
+}
+
+.beneficios-list li:before {
+    content: "▪";
+    position: absolute;
+    left: 0;
+    color: #10b981;
+    font-weight: bold;
+}
+
+.capital-protegido {
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border: 2px solid #3b82f6;
+    border-radius: 0.5rem;
+    padding: 1.25rem;
+    margin: 1.5rem 0;
+    text-align: center;
+}
+
+.capital-valor {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #1e40af;
+    margin-bottom: 0.5rem;
+}
+
+.capital-nota {
+    color: #1e3a8a;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.info-poder {
+    background: #f0fdf4;
+    border: 2px solid #86efac;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.info-poder p {
+    color: #166534;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+.multiplicador {
+    background: #10b981;
+    color: white;
+    padding: 0.125rem 0.5rem;
+    border-radius: 0.25rem;
+    font-weight: bold;
+    font-size: 1.125rem;
+}
+
+.devolucion-ahorro {
+    margin-top: 1rem;
+}
+
+.devolucion-titulo {
+    font-weight: bold;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+.devolucion-valor {
+    background: linear-gradient(135deg, #dcfce7 0%, #bbf7d0 100%);
+    border: 2px solid #22c55e;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin: 1rem 0;
+    text-align: center;
+}
+
+.valor-usd,
+.valor-cop {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #15803d;
+    margin-bottom: 0.5rem;
+}
+
+.valor-nota {
+    color: #166534;
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.ventaja-dolares {
+    background: #fef9c3;
+    border: 2px solid #fde047;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-top: 1rem;
+}
+
+.ventaja-dolares p {
+    color: #713f12;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin: 0;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .plan-ahorro-section {
+        padding: 1.5rem;
+    }
+
+    .escenario-card {
+        padding: 1rem;
+    }
+
+    .capital-valor,
+    .valor-usd,
+    .valor-cop {
+        font-size: 1.25rem;
+    }
+
+    .escenario-card h3 {
+        font-size: 1.125rem;
+    }
+}
+
