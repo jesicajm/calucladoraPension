@@ -756,10 +756,6 @@ function render() {
             <p style="color: #374151; margin-bottom: 0.5rem; font-size: 0.95rem;">
                 • No habría recursos para alimentación, educación, vivienda ni salud
             </p>
-            <p style="color: #374151; font-size: 0.95rem;">
-                • Tus hijos podrían tener que dejar de estudiar y trabajar
-                prematuramente
-            </p>
         </div>
 
         <div class="info-box">
@@ -828,7 +824,7 @@ function render() {
                         <p class="escenario-descripcion">
                             Tu dinero no se pierde. <strong>Todo lo que aportaste se devuelve en dólares.</strong>
                             <div class="devolucion-valor">
-                                <div class="valor-cop">🟩 Recibirías USD ${formatNumber(resultado.capitalUSD)}</div>
+                                <div class="valor-cop"> Recibirías USD ${formatNumber(Math.ceil(resultado.totalAportadoUSD))}</div>
                                 <p class="valor-nota">Ahorro protegido en dólares, sin perder valor.</p>
                             </div>     </p>
             
