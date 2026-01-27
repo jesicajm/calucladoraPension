@@ -52,7 +52,7 @@ exports.enviarEventoMetaCotizacion = onDocumentCreated(
     const eventData = {
       data: [
         {
-          event_name: "LeadCotizacion",
+          event_name: "Lead",
           event_time: Math.floor(Date.now() / 1000),
           action_source: "website",
           user_data: {
