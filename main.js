@@ -42,7 +42,7 @@ let data = {
     numeroHijos: '',
     numeroWhatsapp: '',
     email: '',
-    cedula: ''
+    fechaNacimiento: ''
 };
 
 async function guardarSolicitudCotizacion() {
@@ -60,9 +60,9 @@ async function guardarSolicitudCotizacion() {
         const fbc = getFbcFromUrl() || getCookie("_fbc") || null;
 
         const solicitud = {
-            name: data.nombre,
-            cedula: data.cedula,
-            phone: data.numeroWhatsapp,
+            nombre: data.nombre,
+            fechaNacimiento: data.fechaNacimiento,
+            numeroWhatsapp: data.numeroWhatsapp,
             email: data.email,
             ingresoMensual: parseFloat(data.ingresoMensual),
             numeroHijos: data.numeroHijos,
@@ -78,6 +78,13 @@ async function guardarSolicitudCotizacion() {
 
         console.log("✅ Solicitud enviada correctamente. Documento creado:", docRef.id);
         
+        // Tracking de Meta Pixel
+        if (typeof fbq !== 'undefined') {
+            fbq('track', 'Lead', {
+                content_name: 'Proyección de Ahorro',
+                ingreso_mensual: parseFloat(data.ingresoMensual),
+            });
+        }
     } catch (error) {
         console.error("❌ Error al guardar la solicitud:", error);
     }
@@ -150,7 +157,7 @@ function handleNext() {
             step = 6;
             break;
         case 6:
-            if (!data.cedula) return;
+            if (!data.fechaNacimiento) return;
             step = 'final';
             break;
     }
@@ -174,7 +181,7 @@ function resetForm() {
         numeroHijos: '',
         numeroWhatsapp: '',
         email: '',
-        cedula: ''
+        fechaNacimiento: ''
     };
     render();
 }
@@ -189,7 +196,7 @@ function render() {
             content.innerHTML = `
             <h2>¿Cuál es tu nombre?</h2>
             <div class="input-wrapper">
-                <input type="text" id="nombre" placeholder="David" autofocus>
+                <input type="text" id="nombre" placeholder="Juan Pérez" autofocus>
             </div>
             <button class="button button-primary" id="nextBtn" disabled>
                 Continuar
@@ -325,9 +332,9 @@ function render() {
 
         case 6:
             content.innerHTML = `
-            <h2>¿Cuál es tu número de cédula?</h2>
+            <h2>¿Cuál es tu fecha de nacimiento?</h2>
             <div class="input-wrapper">
-                <input type="text" id="cedula" placeholder="1234567890" autofocus>
+                <input type="date" id="fechaNacimiento" placeholder="DD/MM/AAAA" autofocus>
             </div>
             <button class="button button-primary" id="nextBtn" disabled>
                 Finalizar
@@ -337,20 +344,20 @@ function render() {
             </button>
             `;
 
-            const cedulaInput = document.getElementById('cedula');
-            const cedulaBtn = document.getElementById('nextBtn');
+            const fechaInput = document.getElementById('fechaNacimiento');
+            const fechaBtn = document.getElementById('nextBtn');
 
-            if (data.cedula) {
-                cedulaInput.value = data.cedula;
-                cedulaBtn.disabled = false;
+            if (data.fechaNacimiento) {
+                fechaInput.value = data.fechaNacimiento;
+                fechaBtn.disabled = false;
             }
 
-            cedulaInput.addEventListener('input', (e) => {
-                updateData('cedula', e.target.value);
-                cedulaBtn.disabled = !e.target.value;
+            fechaInput.addEventListener('input', (e) => {
+                updateData('fechaNacimiento', e.target.value);
+                fechaBtn.disabled = !e.target.value;
             });
 
-            cedulaBtn.addEventListener('click', async () => {
+            fechaBtn.addEventListener('click', async () => {
                 await guardarSolicitudCotizacion();
                 handleNext();
             });
